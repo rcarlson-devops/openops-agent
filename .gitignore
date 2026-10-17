@@ -1,0 +1,36 @@
+# Local AI Databases & Memory Clones
+chroma_db/
+.chroma/
+*.db
+*.sqlite
+
+# Local Secret Configurations & Tokens
+.env
+.envrc
+*.local
+credentials.json
+
+# promptfoo CI/CD Evaluation Cache
+.promptfoo/
+promptfoo-current.log
+promptfoo*.html
+
+# Python Virtual Environments & Runtimes
+.venv/
+venv/
+ENV/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE Settings & Operating System Noise
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
