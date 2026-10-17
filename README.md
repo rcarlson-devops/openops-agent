@@ -1,10 +1,10 @@
 # OpenOps-Agent: Autonomous AIOps & MLOps Platform Engine
 
-An open-source, local-first autonomous operations assistant built to demonstrate production-grade **AIOps, MLOps, and Platform Engineering automation**. The system intercepts incoming infrastructure alerts, parses air-gapped internal team markdown runbooks via a vector database, and executes container adjustments through a standardized API abstraction layer—running 100% locally on a single workstation for **$0**.
+An open-source, local-first autonomous operations assistant built to demonstrate production-grade **AIOps, MLOps, and Platform Engineering automation**. The system intercepts incoming infrastructure alerts, parses air-gapped internal markdown runbooks via a vector database, and executes container adjustments directly against a live local **k3d Kubernetes cluster**—running 100% locally on a single workstation for **\$0**.
 
 ```mermaid
 graph TD
-    User[DevOps Engineer / Slack / CLI] --> Graph
+    User[DevOps Engineer / Webhook Alert] --> Graph
 
     subgraph Orchestrator [LangGraph Framework]
         Graph[LangGraph Supervisor State Node] 
@@ -16,11 +16,11 @@ graph TD
 
     subgraph Tooling [Local Infrastructure Abstraction Layer]
         Router --> RAG[Chroma DB Vector Store]
-        Router --> K8s[K8S Cluster MCP Tool]
-        Router --> Git[Git / CI-CD MCP Tool]
+        Router --> K8s[Real k3d Cluster / kubectl Subprocess]
+        Router --> Git[Git / CI-CD Workspace Patches]
     end
 
-    RAG -.-> Runbooks[./runbooks/*.md Files]
+    RAG -.-> Runbooks[./runbooks/*.md Knowledge Base]
 
     subgraph Validation [Continuous Integration Gate]
         CI[promptfoo Eval Matrix]
@@ -29,11 +29,18 @@ graph TD
     CI --> Graph
 ```
 
+## 🧠 The Engineering Value: Why RAG + Runbooks?
+In a mature platform engineering workflow, an LLM should not be given blind, creative freedom to hallucinate infrastructure fixes. Instead, the AI functions as a deterministic **Intent-Parsing & Remediation Loop Router**. 
+
+By treating your internal documentation as **Knowledge-as-Code**, you store standard Markdown runbooks directly inside your infrastructure repository. When an alert hits the system, the AI parses the raw event text, locates your exact validation preconditions via **Chroma DB**, queries the live **k3d cluster state** using the **MCP Server**, safely compiles the precise command parameter strings, executes the remediation patch, and logs the unified execution lifecycle.
+
+---
+
 ## 🛠️ Architecture Stack
 * **Local Inference Node:** [Ollama](https://ollama.com) running `qwen2.5-coder:7b` (optimized for deterministic infrastructure tool-calling) and `nomic-embed-text` vector arrays.
 * **Orchestration Layer:** `LangChain` and `LangGraph` for stateful state machine design patterns, multi-node routing, and human-in-the-loop validation barriers.
 * **Vector Knowledge Base:** `Chroma DB` for low-latency, persistent semantic searching of markdown runbooks.
-* **Infrastructure Interface:** `Anthropic Model Context Protocol (MCP) SDK` executing standard-input/output (`stdio`) sandboxed infrastructure commands.
+* **Infrastructure Interface:** `Anthropic Model Context Protocol (MCP) SDK` managing background `stdio` communication channels that safely execute sandboxed shell subprocesses.
 * **Continuous Integration Test Harness:** `promptfoo` for prompt assertions, security verification testing, and matrix evaluation before push execution.
 
 ---
@@ -48,10 +55,10 @@ graph TD
 ├── .env.example             # Template for network interface variables
 ├── src/
 │   ├── agent.py             # Core LangGraph orchestrator and state engine
-│   ├── ingest.py            # Markdown runbook parser and Chroma ingestion engine
-│   └── mcp_server.py        # Custom DevOps MCP Infrastructure Server
+│   ├── ingest.py            # Local file watcher, markdown splitter, and Chroma ingestion
+│   └── mcp_server.py        # Custom DevOps MCP Server executing real kubectl commands
 ├── runbooks/
-│   └── *.md                 # Local simulated infrastructure runbooks
+│   └── *.md                 # Your real infrastructure Markdown runbooks
 └── tests/
     └── promptfooconfig.yaml # Prompt validation assertions and test matrix suites
 ```
@@ -67,12 +74,16 @@ graph TD
    ollama pull qwen2.5-coder:7b
    ollama pull nomic-embed-text
    ```
+3. Spin up a local local Kubernetes cluster using [k3d](https://k3d.io):
+   ```bash
+   k3d cluster create openops-dev-cluster
+   ```
 
 ### Installation
 Clone this repository into your local workspace runtime (WSL2 Ubuntu recommended), configure your environment values, and run the automated initialization sequence:
 
 ```bash
-git clone https://github.com/rcarlson-devops/openops-agent.git or your own fork of the repo
+git clone https://github.com
 cd openops-agent
 
 # Set up local workspace constants
