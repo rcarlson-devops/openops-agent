@@ -94,6 +94,9 @@ mcp==1.1.2
 # Configuration, Utilities, & System Interfaces
 python-dotenv==1.2.4
 pydantic==2.9.2
+
+# Testing and Verification Layer
+pytest==9.1.1
 EOF
 
 # Install python components
