@@ -1,47 +1,47 @@
-# OpenOps-Agent: Autonomous AIOps & MLOps Platform Engine
+# OpenOps-Agent: Autonomous Job Search & Platform Engineering Engine
 
-An open-source, local-first autonomous operations assistant built to demonstrate production-grade **AIOps, MLOps, and Platform Engineering automation**. The system intercepts incoming infrastructure alerts, parses air-gapped internal markdown runbooks via a vector database, and executes container adjustments directly against a live local **k3d Kubernetes cluster**—running 100% locally on a single workstation for **\$0**.
+An open-source, local-first autonomous operations engine built to demonstrate production-grade **AIOps, MLOps, and Platform Engineering automation**. The system reads a personal professional profile, ingests target job descriptions inside a GitOps directory repository, analyzes qualification skill gaps, and dynamically compiles tailored, ATS-compliant application artifacts. Concurrently, it manages its own state and scheduling tracking logs by interfacing directly with a live local **k3d Kubernetes cluster**—running 100% locally on a single workstation for **\$0**.
 
 ```mermaid
 graph TD
-    User[DevOps Engineer / Webhook Alert] --> Graph
+    User[DevOps Engineer / CLI Trigger] --> Graph
 
     subgraph Orchestrator [LangGraph Framework]
         Graph[LangGraph Supervisor State Node] 
-        Memory[(AgentState Dict)]
+        Memory[(AgentState Dict / Job-Hunt State)]
         Graph --- Memory
     end
 
     Graph --> Router[MCP Client Router]
 
     subgraph Tooling [Local Infrastructure Abstraction Layer]
-        Router --> RAG[Chroma DB Vector Store]
-        Router --> K8s[Real k3d Cluster / kubectl Subprocess]
-        Router --> Git[Git / CI-CD Workspace Patches]
+        Router --> RAG[Chroma DB Vector Store / Resume & Job Data]
+        Router --> K8s[Real k3d Cluster / Postgres Application Deployment]
+        Router --> Git[Git Workspace / GitOps Manifest Synchronizer]
     end
 
-    RAG -.-> Runbooks[./runbooks/*.md Knowledge Base]
+    RAG -.-> Markdown[./workspace/data/ — Resumes / Job Descs / Q&A]
 
     subgraph Validation [Continuous Integration Gate]
-        CI[promptfoo Eval Matrix]
+        CI[promptfoo Eval Matrix / ATS & Guardrail Testing]
     end
     
     CI --> Graph
 ```
 
-## 🧠 The Engineering Value: Why RAG + Runbooks?
-In a mature platform engineering workflow, an LLM should not be given blind, creative freedom to hallucinate infrastructure fixes. Instead, the AI functions as a deterministic **Intent-Parsing & Remediation Loop Router**. 
+## 🧠 The Engineering Value: Why RAG + GitOps Sync?
+In a mature platform engineering environment, an LLM should not be given blind, creative freedom to hallucinate configuration files. Instead, the AI functions as a deterministic **Intent-Parsing & Remediation Loop Router**. 
 
-By treating your internal documentation as **Knowledge-as-Code**, you store standard Markdown runbooks directly inside your infrastructure repository. When an alert hits the system, the AI parses the raw event text, locates your exact validation preconditions via **Chroma DB**, queries the live **k3d cluster state** using the **MCP Server**, safely compiles the precise command parameter strings, executes the remediation patch, and logs the unified execution lifecycle.
+By treating your career data assets as **Knowledge-as-Code**, you store standard Markdown descriptions, resumes, and question logs directly inside your infrastructure repository. When a new target target job manifest is added to the repository loop, the AI parses the raw text requirements, cross-references your qualifications via **Chroma DB**, queries its live state engine database running inside the **k3d cluster** via the **MCP Server**, updates infrastructure states by editing declarative Git layouts, and runs strict verification tests before finalizing the workspace pipeline.
 
 ---
 
 ## 🛠️ Architecture Stack
 * **Local Inference Node:** [Ollama](https://ollama.com) running `qwen2.5-coder:7b` (optimized for deterministic infrastructure tool-calling) and `nomic-embed-text` vector arrays.
 * **Orchestration Layer:** `LangChain` and `LangGraph` for stateful state machine design patterns, multi-node routing, and human-in-the-loop validation barriers.
-* **Vector Knowledge Base:** `Chroma DB` for low-latency, persistent semantic searching of markdown runbooks.
-* **Infrastructure Interface:** `Anthropic Model Context Protocol (MCP) SDK` managing background `stdio` communication channels that safely execute sandboxed shell subprocesses.
-* **Continuous Integration Test Harness:** `promptfoo` for prompt assertions, security verification testing, and matrix evaluation before push execution.
+* **Vector Knowledge Base:** `Chroma DB` for low-latency, persistent semantic searching of resumes, cover letter components, and job metrics.
+* **Infrastructure Interface:** `Anthropic Model Context Protocol (MCP) SDK` managing background `stdio` communication channels that safely execute sandboxed shell subprocesses against Git repositories and Kubernetes clusters.
+* **Continuous Integration Test Harness:** `promptfoo` for prompt assertions, security verification testing, and keyword optimization scanning before code execution loops.
 
 ---
 
@@ -53,14 +53,15 @@ By treating your internal documentation as **Knowledge-as-Code**, you store stan
 ├── requirements.txt         # Python package dependencies
 ├── setup.sh                 # One-command automated bootstrap deployment script
 ├── .env.example             # Template for network interface variables
+├── data/                    # Knowledge-as-Code raw data directory
+│   ├── profile/             # Core master resume, tech stacks, and career logs (.md)
+│   └── jobs/                # Raw targeted job description files (.md)
 ├── src/
-│   ├── agent.py             # Core LangGraph orchestrator and state engine
-│   ├── ingest.py            # Local file watcher, markdown splitter, and Chroma ingestion
-│   └── mcp_server.py        # Custom DevOps MCP Server executing real kubectl commands
-├── runbooks/
-│   └── *.md                 # Your real infrastructure Markdown runbooks
+│   ├── agent.py             # Core LangGraph career orchestrator state machine
+│   ├── ingest.py            # Local file watcher, markdown chunker, and Chroma ingestion
+│   └── mcp_server.py        # Custom DevOps MCP Server executing real system commands
 └── tests/
-    └── promptfooconfig.yaml # Prompt validation assertions and test matrix suites
+    └── promptfooconfig.yaml # promptfoo ATS validation assertions and prompt matrices
 ```
 
 ---
@@ -74,7 +75,7 @@ By treating your internal documentation as **Knowledge-as-Code**, you store stan
    ollama pull qwen2.5-coder:7b
    ollama pull nomic-embed-text
    ```
-3. Spin up a local local Kubernetes cluster using [k3d](https://k3d.io):
+3. Spin up a local Kubernetes cluster using [k3d](https://k3d.io):
    ```bash
    k3d cluster create openops-dev-cluster
    ```
