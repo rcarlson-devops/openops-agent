@@ -99,6 +99,12 @@ pydantic==2.9.2
 pytest==9.1.1
 EOF
 
+cat << 'EOF' > pyproject.toml
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+EOF
+
 # Install python components
 log_info "Executing python package installations inside the virtual environment..."
 "$VENV_BIN/pip" install -r requirements.txt
