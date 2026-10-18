@@ -80,16 +80,16 @@ log_info "Writing python dependency manifest (requirements.txt)..."
 
 cat << 'EOF' > requirements.txt
 # Core LangChain & LangGraph Orchestration Stack
-langchain-core==0.3.12
-langchain-ollama==0.2.0
-langchain-chroma==0.1.4
-langgraph==0.2.39
+langchain-core==1.6.12
+langchain-ollama==1.1.0
+langchain-chroma==1.1.0
+langgraph==1.2.16
 
 # Official Anthropic Model Context Protocol SDK
 mcp==1.1.2
 
 # Configuration, Utilities, & System Interfaces
-python-dotenv==1.0.1
+python-dotenv==1.2.4
 pydantic==2.9.2
 EOF
 
