@@ -39,14 +39,17 @@ log_info "All prerequisite system binaries found."
 # ------------------------------------------------------------------------------
 log_info "Constructing modular repository directory tree..."
 
-mkdir -p src runbooks tests
+mkdir -p src data/profile data/jobs data/interview-questions tests
 
 # Generate empty placeholder files if they do not exist
 touch src/__init__.py
 touch src/agent.py
 touch src/ingest.py
 touch src/mcp_server.py
-touch runbooks/runbook-101.md
+touch data/profile/.gitkeep
+touch data/jobs/.gitkeep
+touch data/interview-questions/.gitkeep
+touch tests/promptfooconfig.yaml
 
 log_info "Directory layouts and python modules successfully stubbed."
 
@@ -91,6 +94,15 @@ mcp==1.1.2
 # Configuration, Utilities, & System Interfaces
 python-dotenv==1.2.4
 pydantic==2.9.2
+
+# Testing and Verification Layer
+pytest==9.1.1
+EOF
+
+cat << 'EOF' > pyproject.toml
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
 EOF
 
 # Install python components

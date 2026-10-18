@@ -1,115 +1,123 @@
 # OpenOps-Agent: Autonomous Job Search & Platform Engineering Engine
 
-An open-source, local-first autonomous operations engine built to demonstrate production-grade **AIOps, MLOps, and Platform Engineering automation**. The system reads a personal professional profile, ingests target job descriptions inside a GitOps directory repository, analyzes qualification skill gaps, and dynamically compiles tailored, ATS-compliant application artifacts. Concurrently, it manages its own state and scheduling tracking logs by interfacing directly with a live local **k3d Kubernetes cluster**—running 100% locally on a single workstation for **\$0**.
+An enterprise-grade, local-first autonomous operations platform built to demonstrate production-grade **AIOps, MLOps, and Infrastructure Automation**. The architecture establishes a deterministic orchestration engine that reads professional profiles, ingests targeted job specifications, evaluates qualification gaps, and dynamically compiles tailored, ATS-compliant deployment artifacts. Concurrently, it interfaces directly with a live local **k3d Kubernetes cluster** to reconcile system workloads—operating 100% locally on a single workstation for a total infrastructure footprint of **\$0**.
 
 ```mermaid
 graph TD
-    User[DevOps Engineer / CLI Trigger] --> Graph
+    User[Lead DevOps Engineer / CLI Trigger] --> Graph
 
     subgraph Orchestrator [LangGraph Framework]
         Graph[LangGraph Supervisor State Node] 
-        Memory[(AgentState Dict / Job-Hunt State)]
+        Memory[(AgentState Dict / Operational Context)]
         Graph --- Memory
     end
 
     Graph --> Router[MCP Client Router]
 
     subgraph Tooling [Local Infrastructure Abstraction Layer]
-        Router --> RAG[Chroma DB Vector Store / Resume & Job Data]
-        Router --> K8s[Real k3d Cluster / Postgres Application Deployment]
+        Router --> RAG[Chroma DB Vector Store / Knowledge Matrix]
+        Router --> K8s[Real k3d Cluster / Auxiliary App Deployments]
         Router --> Git[Git Workspace / GitOps Manifest Synchronizer]
     end
 
-    RAG -.-> Markdown[./workspace/data/ — Resumes / Job Descs / Q&A]
+    RAG -.-> Markdown[./data/ — Profiles / Jobs / Validation Logs]
 
     subgraph Validation [Continuous Integration Gate]
-        CI[promptfoo Eval Matrix / ATS & Guardrail Testing]
+        CI[promptfoo Eval Matrix / ATS Optimization & Guardrails]
     end
     
     CI --> Graph
 ```
 
-## 🧠 The Engineering Value: Why RAG + GitOps Sync?
-In a mature platform engineering environment, an LLM should not be given blind, creative freedom to hallucinate configuration files. Instead, the AI functions as a deterministic **Intent-Parsing & Remediation Loop Router**. 
+## 🧠 The Engineering Philosophy: Intent-Parsing & Reconciled GitOps Loops
+In a mature platform ecosystem, generative models should not be granted unconstrained, creative freedom to hallucinate configuration files. Instead, this system treats the AI as a deterministic, tool-calling **Intent-Parsing & Remediation Router**. 
 
-By treating your career data assets as **Knowledge-as-Code**, you store standard Markdown descriptions, resumes, and question logs directly inside your infrastructure repository. When a new target target job manifest is added to the repository loop, the AI parses the raw text requirements, cross-references your qualifications via **Chroma DB**, queries its live state engine database running inside the **k3d cluster** via the **MCP Server**, updates infrastructure states by editing declarative Git layouts, and runs strict verification tests before finalizing the workspace pipeline.
-
----
-
-## 🛠️ Architecture Stack
-* **Local Inference Node:** [Ollama](https://ollama.com) running `qwen2.5-coder:7b` (optimized for deterministic infrastructure tool-calling) and `nomic-embed-text` vector arrays.
-* **Orchestration Layer:** `LangChain` and `LangGraph` for stateful state machine design patterns, multi-node routing, and human-in-the-loop validation barriers.
-* **Vector Knowledge Base:** `Chroma DB` for low-latency, persistent semantic searching of resumes, cover letter components, and job metrics.
-* **Infrastructure Interface:** `Anthropic Model Context Protocol (MCP) SDK` managing background `stdio` communication channels that safely execute sandboxed shell subprocesses against Git repositories and Kubernetes clusters.
-* **Continuous Integration Test Harness:** `promptfoo` for prompt assertions, security verification testing, and keyword optimization scanning before code execution loops.
+By treating data assets as **Knowledge-as-Code**, career metrics and targeted job manifests are managed entirely via declarative Markdown configurations within a structured Git tree. When updates are committed to the repository, the engine executes a multi-tenant retrieval loop across **Chroma DB**, computes embeddings via local proxies, audits live environment states using custom **Model Context Protocol (MCP)** endpoints, edits local workspace layouts, and forces automated validations prior to final delivery.
 
 ---
 
-## 📂 Repository Layout
+## 🛠️ Production Architecture Stack
+* **Local Inference Hub:** [Ollama](https://ollama.com) executing `qwen2.5-coder:7b` (optimized for deterministic infrastructure tool-calling) and `nomic-embed-text` vector models.
+* **Orchestration Framework:** `LangChain` & `LangGraph` locked to the modern `v1.x` ecosystem for explicit state-machine design patterns, multi-node conditional routing, and human-in-the-loop validation barriers.
+* **Vector Store Index:** `Chroma DB` configured via a persistent, parameters-driven, disk-backed layout for low-latency semantic analysis.
+* **Systems Interfacing Node:** `Anthropic Model Context Protocol (MCP) SDK` managing isolated background `stdio` pathways to securely execute sandboxed system operations against Git layouts and Kubernetes environments.
+* **Continuous Integration Test Harness:** [promptfoo](https://promptfoo.dev) for rigorous prompt assertions, schema compliance verification, and automated regression scanning.
+
+---
+
+## 📂 System Directory Tree
 ```text
 .
-├── .gitignore               # System, runtime, and secret exclusion blocks
-├── README.md                # Platform documentation and architecture overview
-├── requirements.txt         # Python package dependencies
-├── setup.sh                 # One-command automated bootstrap deployment script
-├── .env.example             # Template for network interface variables
-├── data/                    # Knowledge-as-Code raw data directory
-│   ├── profile/             # Core master resume, tech stacks, and career logs (.md)
-│   └── jobs/                # Raw targeted job description files (.md)
+├── pyproject.toml           # Pytest system pythonpath discovery rules
+├── requirements.txt         # Version-locked package dependency manifest
+├── setup.sh                 # Standardized, automated bootstrap workspace deployment utility
+├── .env.example             # Network bridge and environment gateway variables template
+├── data/                    # Knowledge-as-Code declarative data warehouse
+│   ├── profile/             # Master profiles, core competencies, and career metrics (.md)
+│   └── jobs/                # Targeted industry job descriptions (.md)
 ├── src/
-│   ├── agent.py             # Core LangGraph career orchestrator state machine
-│   ├── ingest.py            # Local file watcher, markdown chunker, and Chroma ingestion
-│   └── mcp_server.py        # Custom DevOps MCP Server executing real system commands
+│   ├── __init__.py          # Python namespace initialization
+│   ├── agent.py             # Core LangGraph career orchestrator state machine logic
+│   ├── ingest.py            # Optimized parameter-driven data ingestion and chunking engine
+│   └── mcp_server.py        # Custom DevOps MCP Server executing live shell subprocesses
 └── tests/
+    ├── test_ingest.py       # Isolated unit test verification matrices
     └── promptfooconfig.yaml # promptfoo ATS validation assertions and prompt matrices
 ```
 
 ---
 
-## 🚀 Getting Started (100% Local Setup)
+## 🚀 Getting Started (100% Local Deployment)
 
-### Prerequisite Environment Configuration
-1. Install [Ollama](https://ollama.com) on your host operating system.
-2. In your host environment terminal, pull down the target developer modules:
+### Prerequisite Host Configuration
+1. Install [Ollama](https://ollama.com) on your underlying operating system.
+2. Pull down the optimized developer models from your terminal interface:
    ```bash
    ollama pull qwen2.5-coder:7b
    ollama pull nomic-embed-text
    ```
-3. Spin up a local Kubernetes cluster using [k3d](https://k3d.io):
+3. Initialize the target Kubernetes runtime using [k3d](https://k3d.io):
    ```bash
    k3d cluster create openops-dev-cluster
    ```
 
-### Installation
-Clone this repository into your local workspace runtime (WSL2 Ubuntu recommended), configure your environment values, and run the automated initialization sequence:
+### Automated Workspace Bootstrap
+Clone the platform core into your environment (WSL2 Ubuntu recommended), copy the environmental variable templates, and run the automated bootstrap shell script to establish sandboxed virtual layouts and file dependencies:
 
 ```bash
 git clone https://github.com
 cd openops-agent
 
-# Set up local workspace constants
+# Set up local workspace network constants
 cp .env.example .env
-# Edit .env to point your WSL interface to your Windows Host bridge IP if necessary
+# Note: For WSL2 execution loops, modify OLLAMA_BASE_URL to match your Windows Host bridge IP
 
 # Execute the local workspace creation sequence
 chmod +x setup.sh
 ./setup.sh
 ```
 
+### Executing the Testing Harness
+To run the automated, network-isolated unit test suite built to protect the ingestion layer:
+```bash
+source .venv/bin/activate
+pytest -v
+```
+
 ---
 
-## 🧪 CI/CD Testing with promptfoo
-To ensure that prompt structures stay consistent, handle schema declarations predictably, and never hallucinate dangerous execution parameters (such as raw `--force` or recursive deletion mutations), validation models are integrated directly into local testing matrices:
+## 🧪 Prompts-as-Code Validation Gate (promptfoo)
+To ensure that prompt structures remain deterministic and enforce strict schema compliance without hallucinating invalid configuration parameters, evaluation models are integrated directly into our pre-merge testing hooks:
 
 ```bash
 # Execute the parallel system evaluation matrix via terminal
 OLLAMA_BASE_URL="http://YOUR_HOST_BRIDGE_IP:11434" promptfoo eval
 ```
 
-To visually audit test results, trace inputs, and inspect parameter outputs directly via a clean dashboard UI, type:
+To visually audit test results, track inputs, and inspect parameter outputs directly via a clean dashboard UI, type:
 ```bash
 promptfoo view
 ```
 
 ---
-*Developed by Robert Carlson — Platform & DevOps Engineer.*
+*Maintained by Robert Carlson — Platform & DevOps Engineer.*
